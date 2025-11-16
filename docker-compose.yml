@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./web
+    ports:
+      - '3000:3000' # Next.js dev server
+    environment:
+      - PORT=3000
+    volumes:
+      - ./web:/app
+
+  varnish:
+    build: ./varnish
+    ports:
+      - '8080:80' # Varnish listens on 80 inside container
+    depends_on:
+      - web
+
