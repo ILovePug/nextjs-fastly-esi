@@ -8,6 +8,17 @@ backend default {
 # Simple VCL to enable ESI for templates and fetch fragments uncompressed.
 
 sub vcl_recv {
+  # Inject a fake uid cookie for testing if none exists
+  # This allows you to test ESI immediately without setting cookies manually
+  # To test with a real cookie, set it in browser: document.cookie = "uid=alice"
+  if (!req.http.Cookie || req.http.Cookie !~ "uid=") {
+    if (req.http.Cookie) {
+      set req.http.Cookie = req.http.Cookie + "; uid=test-user-123";
+    } else {
+      set req.http.Cookie = "uid=test-user-123";
+    }
+  }
+
   # Normalize URL for easy matching
   if (req.url ~ "^/$") {
     # ensure origin returns uncompressed HTML so we can parse ESI
