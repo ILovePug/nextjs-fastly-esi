@@ -9,20 +9,22 @@ export default function Home() {
       <header
         dangerouslySetInnerHTML={{
           __html: `
-            <esi:include src="/api/user-profile?uid=$(http_cookie{uid})" />
-            <esi:include src="/api/cart-summary?uid=$(http_cookie{uid})" />
-          `
+            <esi:include src="/api/user-profile" />
+            <esi:include src="/api/cart-summary" />
+          `,
         }}
       />
       <main>
         <h1>Home — template with ESI</h1>
-        <p>This content is the main page. The header is personalized via ESI fragments.</p>
+        <p>
+          This content is the main page. The header is personalized via ESI
+          fragments.
+        </p>
       </main>
     </>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
-  return { props: {} }
+  return { props: {} };
 }
-

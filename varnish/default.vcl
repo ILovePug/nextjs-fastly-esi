@@ -17,7 +17,15 @@ sub vcl_recv {
   }
 
   # For fragment endpoints, also request uncompressed from origin
-  if (req.url ~ "^/api/(user-profile|cart-summary|page-content)") {
+  # and pass cookies through (don't cache personalized content)
+  if (req.url ~ "^/api/(user-profile|cart-summary)") {
+    unset req.http.Accept-Encoding;
+    # These are personalized, so bypass cache and pass cookies
+    return(pass);
+  }
+
+  # page-content is not personalized, can be cached normally
+  if (req.url ~ "^/api/page-content") {
     unset req.http.Accept-Encoding;
   }
 }

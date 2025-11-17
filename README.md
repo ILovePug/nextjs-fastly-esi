@@ -19,9 +19,11 @@ docker-compose up --build
 * Visit `http://localhost:8080/` — Varnish will fetch the template from Next.js, parse ESI tags and fetch the fragments, stitch them and return the final HTML gzipped to the browser.
 
 * The fragments are:
-  * `/api/user-profile?uid=123`
-  * `/api/cart-summary?uid=123`
+  * `/api/user-profile` (reads `uid` from cookies)
+  * `/api/cart-summary` (reads `uid` from cookies)
   * `/api/page-content?path=/` (per-page fragment)
+
+* To test with cookies, set a `uid` cookie in your browser (e.g., using DevTools: `document.cookie = "uid=alice"`)
 
 ### Notes
 
